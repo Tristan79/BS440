@@ -131,7 +131,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             print d
         if d[1] == "Unknown":
             print "YEA"
-            rename_sensors(d[0],d[1])
+            rename_sensors(d[0],newname)
             query = True
 
 
