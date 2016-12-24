@@ -8,7 +8,7 @@ import base64
 import logging
 import traceback
 import json
-from ConfigParser import SafeConfigParser
+from ConfigParser import *
 
 configDomoticz = SafeConfigParser()
 configDomoticz.read('BS440domoticz.ini')
