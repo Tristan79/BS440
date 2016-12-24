@@ -20,7 +20,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     url_per = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s'
     url_hardware_add = 'http://%s/json.htm?type=command&param=addhardware&htype=15&port=1&name=%s&enabled=true'
     url_hardware = 'http://%s/json.htm?type=hardware'
-    url_sensor = 'type=devices&filter=utility&used=true&order=Name'
+    url_sensor = 'http://%s/json.htm?type=devices&filter=utility&used=true&order=Name'
+    url_sensor_add = 'http://%s/json.htm?type=createvirtualsensor&idx=%s&sensorname=%s&sensortype=%s'
 
     def open_url(url):
         log.debug('Opening url: %s' % (url))
@@ -32,7 +33,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return response
 
     def exists_hardware(name):
-        response = open_url(url_hardware% (domoticzurl))
+        response = open_url(url_hardware % (domoticzurl))
         data = json.loads(response.read())
         if "result" in data:
             for i in range(0,len(data['result'])):
@@ -51,24 +52,23 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                 return
 
     def exists_sensor(self,name):
-        response = open_url(url_sensor% (domoticzurl))
+        response = open_url(url_sensor % (domoticzurl))
         data = json.loads(response.read())
-        if "result" in data:
-            for i in range(0,len(data["result"])):
-                if name == data["result"][i]["Name"] and int(self.hardware_idx) == data["result"][i]["HardwareID"]:
-                    return data["result"][i]["idx"]
-        return "None"
+        if 'result' in data:
+            for i in range(0,len(data['result'])):
+                if name == data['result'][i]['Name'] and hardwareid == data['result'][i]['HardwareID']:
+                    return data['result'][i]['idx']
+        return 'None'
 
 
-    def use_virtual_sensor(name,type,options=""):
-        nameurl = name.replace(" ", "%20")
+    def use_virtual_sensor(name,type,options=''):
         idx = self.exists_sensor(name)
-        if "None" != idx:
+        if 'None' != idx:
             return idx
-        if "None" == idx:
-            url = self.base() + "type=createvirtualsensor&idx="+ self.hardware_idx + "&sensorname=" + nameurl +  "&sensortype=" + str(type)
-            if options != "":
-                url = url + "&sensoroptions=" + options
+        if 'None' == idx:
+            url = url_sensor_add % (domoticzurl, hardwareid, name.replace(' ', '%20'),str(type))
+            if options != '':
+                url = url + '&sensoroptions=' + options
             response = open_url(url)
             x = self.exists_sensor(name)
             print x
