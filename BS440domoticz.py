@@ -113,6 +113,26 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                     return True
         return False
 
+    def exists_realid(realid):
+        global query
+        global data
+        if query:
+            response = open_url(url_sensor % (domoticzurl))
+            data = json.loads(response.read())
+            query = False
+        if 'result' in data:
+            for i in range(0,len(data['result'])):
+                if realid == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
+                    return (data['result'][i]['idx'],data['result'][i]['Name'])
+        return 'None'
+
+
+    def rename_realid(id,newname)
+            (idx, name) = exists_realid(id)
+            if name == "Unknown":
+                rename_sensors(idx,newname)
+
+
     def use_virtual_sensor(name,type,options=''):
         global query
         sensorid = exists_sensor(name)
@@ -212,6 +232,13 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.info((log_update+'lean body mass %s') % (user, id+5, lbm))
         open_url(url_mass % (domoticzurl, hardwareid, id+5, unit, lbm))
 
+        query = True
+        rename_realid(user + " " + 'Weight')
+        rename_realid(user + " " + 'Fat Mass')
+        rename_realid(user + " " + 'Muscle Mass')
+        rename_realid(user + " " + 'Bone Mass')
+        rename_realid(user + " " + 'Lean Body Mass')
+        
         # Percentage
 
         log.info((log_update+'fat percentage %s') % (user, fatid, fat_per))
@@ -235,7 +262,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             
         log.info((log_update+'body mass index %s') % (user, bmiid, bmi))
         open_url(url_per  % (domoticzurl, bmiid, bmi))
-        
+
         log.info('Domoticz succesfully updated')
     except Exception, e:
         print str(traceback.format_exc())
