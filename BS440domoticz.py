@@ -53,6 +53,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
 
     def exists_sensor(name):
+        print "NAME: " + name
         response = open_url(url_sensor % (domoticzurl))
         data = json.loads(response.read())
         if 'result' in data:
