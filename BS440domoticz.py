@@ -165,13 +165,27 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             configDomoticz.add_section(personsection)
         except DuplicateSectionError:
             pass
-        fatid = get_id('fat_id','Fat Percentage',SensorPercentage)
+        fatid = get_id('fat_per_id','Fat Percentage',SensorPercentage)
         bmrid = get_id('bmr_id','BMR',SensorCustom,'1;Calories')
-        muscleid = get_id('muscle_id','Muscle Percentage',SensorPercentage)
-        boneid = get_id('bone_id','Bone Percentage',SensorPercentage)
-        waterid = get_id('water_id','Water Percentage',SensorPercentage)
-        lbmid = get_id('lbm_id','Water Percentage',SensorPercentage)
+        muscleid = get_id('muscle_per_id','Muscle Percentage',SensorPercentage)
+        boneid = get_id('bone_per_id','Bone Percentage',SensorPercentage)
+        waterid = get_id('water_per_id','Water Percentage',SensorPercentage)
+        lbmperid = get_id('lbm_per_id','Water Percentage',SensorPercentage)
         bmiid = get_id('bmi_id','BMI',SensorCustom,'1;')
+        
+        # Mass
+        weightid = 79
+        fatmassid = 81
+        watermassid = 82
+        musclemassid = 83
+        bonemassid = 84
+        lbmid = 85
+        weightunit = 1
+        fatmassunit = 1
+        watermassunit = 1
+        musclemassunit = 1
+        bonemassunit = 1
+        bmunit6 = 1
     except Exception, e:
         print str(e)
         log.error('Unable to access Domoticz sensors')
@@ -200,41 +214,37 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         lbm_per = (lbm / weight) * 100
         kcal = bodydata[0]['kcal']
         bmi = 0
-        for p in persondata:
-            if p['person'] == bodydata[0]['person']:
-                size = p['size'] / 100.0
+        for user in persondata:
+            if user['person'] == bodydata[0]['person']:
+                size = user['size'] / 100.0
                 bmi = weight / (size * size)
 
         log_update = 'Updating Domoticz for user %s at index %s with '
-       
-        # Mass
-        id = 79
-        unit = 1
 
-        log.info((log_update+'weight %s') % (user, id, weight))
-        open_url(url_mass % (domoticzurl, hardwareid, id, unit, weight))
+        log.info((log_update+'weight %s') % (user, weightid, weight))
+        open_url(url_mass % (domoticzurl, hardwareid, weightid, weightunit, weight))
 
-        log.info((log_update+'fat mass %s') % (user, id+1, fat_mass))
-        open_url(url_mass % (domoticzurl, hardwareid, id+1, unit, fat_mass))
+        log.info((log_update+'fat mass %s') % (user, fatmassid, fat_mass))
+        open_url(url_mass % (domoticzurl, hardwareid, fatmassid, fatmassunit, fat_mass))
 
-        log.info((log_update+'water mass %s') % (user, id+2, water_mass))
-        open_url(url_mass % (domoticzurl, hardwareid, id+2, unit, water_mass))
+        log.info((log_update+'water mass %s') % (user, watermassid, water_mass))
+        open_url(url_mass % (domoticzurl, hardwareid, watermassid, watermassunit, water_mass))
 
-        log.info((log_update+'muscle mass %s') % (user, id+3, muscle_mass))
-        open_url(url_mass % (domoticzurl, hardwareid, id+3, unit, muscle_mass))
+        log.info((log_update+'muscle mass %s') % (user, musclemassid, muscle_mass))
+        open_url(url_mass % (domoticzurl, hardwareid, musclemassid, musclemassunit, muscle_mass))
 
-        log.info((log_update+'bone mass %s') % (user, id+4, bone_mass))
-        open_url(url_mass % (domoticzurl, hardwareid, id+4, unit, bone_mass))
+        log.info((log_update+'bone mass %s') % (user, bonemassid, bone_mass))
+        open_url(url_mass % (domoticzurl, hardwareid, bonemassid, bonemassunit, bone_mass))
 
-        log.info((log_update+'lean body mass %s') % (user, id+5, lbm))
-        open_url(url_mass % (domoticzurl, hardwareid, id+5, unit, lbm))
+        log.info((log_update+'lean body mass %s') % (user, lbmid, lbm))
+        open_url(url_mass % (domoticzurl, hardwareid, lbmid, lbmunit, lbm))
 
         query = True
-        rename_realid(user + " " + 'Weight')
-        rename_realid(user + " " + 'Fat Mass')
-        rename_realid(user + " " + 'Muscle Mass')
-        rename_realid(user + " " + 'Bone Mass')
-        rename_realid(user + " " + 'Lean Body Mass')
+        rename_realid(weightid,user + " " + 'Weight')
+        rename_realid(fatmassid,user + " " + 'Fat Mass')
+        rename_realid(muscleid,user + " " + 'Muscle Mass')
+        rename_realid(bonemassid,user + " " + 'Bone Mass')
+        rename_realid(lbmid,user + " " + 'Lean Body Mass')
         
         # Percentage
 
@@ -250,8 +260,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.info((log_update+'bone percentage %s') % (user, boneid, bone_per))
         open_url(url_per % (domoticzurl, boneid, bone_per))
 
-        log.info((log_update+'lean body mass percentage %s') % (user, lbmid, lbm_per))
-        open_url(url_per % (domoticzurl, lbmid, lbm_per))
+        log.info((log_update+'lean body mass percentage %s') % (user, lbmperid, lbm_per))
+        open_url(url_per % (domoticzurl, lbmperid, lbm_per))
         
         # Other
         log.info((log_update+'basal metabolic rate calories %s') % (user, bmrid, kcal))
