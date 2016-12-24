@@ -124,7 +124,7 @@ while True:
             UpdateDomoticz(config, weightdatasorted, bodydatasorted, persondata)
         continue_comms = True
         
-        return
+        break
         '''
         subscribe to characteristics and have processIndication
         process the data received.
