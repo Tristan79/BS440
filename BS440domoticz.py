@@ -14,12 +14,14 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     domoticzurl = config.get('Domoticz', 'domoticz_url')
     domoticzuser = ""
     domoticzpwd = ""
-    
+    prefix = config.get('Domoticz', 'sensor_name_prefix')
+   
     url_mass = 'http://%s/json.htm?type=command&param=udevice&hid=%s&' \
               'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s'
     url_per = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s'
     url_hardware_add = 'http://%s/json.htm?type=command&param=addhardware&htype=15&port=1&name=%s&enabled=true'
     url_hardware = 'http://%s/json.htm?type=hardware'
+    url_sensor = 'type=devices&filter=utility&used=true&order=Name'
 
     def open_url(url):
         log.debug('Opening url: %s' % (url))
@@ -27,28 +29,69 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             response = urllib.urlopen(url)
         except Exception, e:
             log.error('Failed to send data to Domoticz (%s)' % (url))
-            return "{}"
+            return '{}'
         return response
 
     def exists_hardware(name):
         response = open_url(url_hardware% (domoticzurl))
         data = json.loads(response.read())
         if "result" in data:
-            for i in range(0,len(data["result"])):
-                if name == data["result"][i]["Name"]:
-                    return data["result"][i]["idx"]
-        return "None"
-     
-    harwarename = "Medisana"
+            for i in range(0,len(data['result'])):
+                if name == data['result'][i]['Name']:
+                    return data['result'][i]['idx']
+        return 'None'
+
+    # Check if hardware exists and add if not..
+    harwarename = 'Medisana'
     hardwareid = exists_hardware(harwarename)
-    if "None" == hardwareid:
-        response = open_url(url_hardware_add % (domoticzurl, harwarename.replace(" ", "%20")))
+    if 'None' == hardwareid:
+        response = open_url(url_hardware_add % (domoticzurl, harwarename.replace(' ', '%20')))
         hardwareid = exists_hardware(harwarename)
-        if "None" == hardwareid:
+        if 'None' == hardwareid:
                 log.error('Unable to access Domoticz hardware')
                 return
 
-    print hardwareid
+    def exists_sensor(self,name):
+        response = open_url(url_sensor% (domoticzurl))
+        data = json.loads(response.read())
+        if "result" in data:
+            for i in range(0,len(data["result"])):
+                if name == data["result"][i]["Name"] and int(self.hardware_idx) == data["result"][i]["HardwareID"]:
+                    return data["result"][i]["idx"]
+        return "None"
+
+
+    def use_virtual_sensor(name,type,options=""):
+        nameurl = name.replace(" ", "%20")
+        idx = self.exists_sensor(name)
+        if "None" != idx:
+            return idx
+        if "None" == idx:
+            url = self.base() + "type=createvirtualsensor&idx="+ self.hardware_idx + "&sensorname=" + nameurl +  "&sensortype=" + str(type)
+            if options != "":
+                url = url + "&sensoroptions=" + options
+            response = open_url(url)
+            x = self.exists_sensor(name)
+            print x
+            return x
+
+    SensorPercentage = 2
+    SensorCustom     = 1004
+
+    user = 'Tristan'
+
+    try:
+        fatid = use_virtual_sensor(user + ' Fat Percentage',SensorPercentage)
+        kcalid = use_virtual_sensor(user + ' BMR',SensorCustom)
+        muscleid = use_virtual_sensor(user + ' Muscle Percentage',SensorPercentage)
+        boneid  = use_virtual_sensor(user + ' Bone Percentage',SensorPercentage)
+        waterid = use_virtual_sensor(user + ' Water Percentage',SensorPercentage)
+        bmiid = use_virtual_sensor(user + ' BMI',SensorCustom)
+        lbsid = use_virtual_sensor(user + ' Lean Body Mass Percentage',SensorPercentage)
+    except:
+        log.error('Unable to access Domoticz sensors')
+        return
+
 
     return
     # read user's name
@@ -60,20 +103,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                   'for person %d' % (weightdata[0]['person']))
         return
 
-    # read domoticz ids from domoticz section
-    personsection = 'Domoticz.' + personsection
-    if config.has_section(personsection):
-        fatid = config.get(personsection, 'fat_id')
-        kcalid = config.get(personsection, 'kcal_id')
-        muscleid = config.get(personsection, 'muscle_id')
-        boneid = config.get(personsection, 'bone_id')
-        waterid = config.get(personsection, 'water_id')
-        bmiid = config.get(personsection, 'bmi_id')
-        lbsid = config.get(personsection, 'lbs_id')
-    else:
-        log.error('Unable to update Domoticz: No details found in domoticz section of the ini file '
-                  'for person %d' % (weightdata[0]['person']))
-        return
     try:
         
         # calculate and populate variables
