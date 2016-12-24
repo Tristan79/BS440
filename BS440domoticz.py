@@ -77,7 +77,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         if 'result' in data:
             for i in range(0,len(data['result'])):
                 if name == data['result'][i]['Name'] and int(hardwareid) == data['result'][i]['HardwareID']:
-                    print data['result'][i]['idx']
                     return data['result'][i]['idx']
         return 'None'
 
@@ -117,6 +116,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         except DuplicateSectionError:
             pass
         fatid = get_id('fat_id','Fat Percentage',SensorPercentage)
+        print "f"
+        print fatid
         bmrid = get_id('bmr_id','BMR',SensorCustom,'1;Calories')
         muscleid = get_id('muscle_id','Muscle Percentage',SensorPercentage)
         boneid = get_id('bone_id','Bone Percentage',SensorPercentage)
