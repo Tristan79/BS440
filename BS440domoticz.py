@@ -90,6 +90,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             if options != '':
                 url = url + '&sensoroptions=' + options
             response = open_url(url)
+            print "GER"
             write_config = True
             return exists_sensor(name)
 
