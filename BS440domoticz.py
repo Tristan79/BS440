@@ -64,7 +64,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         muscle_mass = (muscle_per / 100) * weight
         bone_mass = bodydata[0]['bone']
         bone_per = (bone_mass / weight) * 100
-        lbs_mass = weight – (weight * (fat_per / 100.0))
+        lbs_mass = weight - (weight * (fat_per / 100.0))
         lbs_per = (lbs_mass / weight) * 100
         kcal = bodydata[0]['kcal']
         bmi = 0
