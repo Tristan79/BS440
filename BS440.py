@@ -121,7 +121,7 @@ while True:
         bodydata = []
         
         if config.has_section('Domoticz'):
-        UpdateDomoticz(config, weightdatasorted, bodydatasorted, persondata)
+            UpdateDomoticz(config, weightdatasorted, bodydatasorted, persondata)
         continue_comms = True
         
         return
