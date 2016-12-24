@@ -77,12 +77,13 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         for i in persondata:
             if i['person'] == bodydata[0]['person']:
                 size = i['size'] / 100.0
-        bmi = weightdata[0]['weight'] / (size * size)
+                bmi = weightdata[0]['weight'] / (size * size)
 
-        log.info('Updating Domoticz for user %s at index %s with BMI %s' % (
-                  scaleuser, bmiid, bodydata[0]['bmi']))
-        callurl('http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (
-               domoticzurl, bmiid, bmi))
+                log.info('Updating Domoticz for user %s at index %s with BMI %s' % (
+                          scaleuser, bmiid, bodydata[0]['bmi']))
+                callurl('http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (
+                       domoticzurl, bmiid, bmi))
+
 
         log.info('Domoticz succesfully updated')
     except:
