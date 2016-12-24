@@ -110,7 +110,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         write_config = True
         return rid
         
-    print
 
     try:
         try:
@@ -128,6 +127,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         print str(e)
         log.error('Unable to access Domoticz sensors')
         return
+
+    print write_config
 
     if write_config:
         with open('BS440domoticz.ini', 'wb') as configfile:
