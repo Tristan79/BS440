@@ -73,7 +73,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                 url = url + '&sensoroptions=' + options
             response = open_url(url)
             x = exists_sensor(name)
-            print x
+            print str(x)
             return x
 
     SensorPercentage = 2
