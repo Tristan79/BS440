@@ -94,7 +94,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     SensorPercentage = 2
     SensorCustom     = 1004
    
-    write_config = False
+    global write_config = False
 
     # create or discover sensors
     def get_id(iniid,text,type,options=""):
