@@ -24,7 +24,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     
     try:
         hardwarename = config.get('Domoticz', 'hardware_name')
-    else:
+    except:
         hardwarename = "Medisana"
 
     domoticzuser = ""
