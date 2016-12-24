@@ -11,7 +11,7 @@ import traceback
 def UpdateDomoticz(config, weightdata, bodydata, persondata):
     log = logging.getLogger(__name__)
     domoticzurl = config.get('Domoticz', 'domoticz_url')
-    hardware_id =  config.get('Domoticz', 'hardware_id')
+    hardwareid =  config.get('Domoticz', 'hardware_id')
     domoticzuser = ""
     domoticzpwd = ""
 
@@ -77,10 +77,10 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
        
         # Mass
         log.info((log_update+'weight %s') % (user, id, weight))
-        callurl((url_mass) % (domoticzurl, hardwareid, id, unit, weight))
+        callurl(url_mass % (domoticzurl, hardwareid, id, unit, weight))
 
         log.info((log_update+'fat mass %s') % (user, id+1, fat_mass))
-        callurl((url_mass) % (domoticzurl, hardwareid, id+1, unit, fat_mass))
+        callurl(url_mass % (domoticzurl, hardwareid, id+1, unit, fat_mass))
 
         log.info((log_update+'water mass %s') % (user, id+2, water_mass))
         callurl(url_mass % (domoticzurl, hardwareid, id+2, unit, water_mass))
