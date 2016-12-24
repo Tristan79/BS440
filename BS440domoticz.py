@@ -51,7 +51,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                 log.error('Unable to access Domoticz hardware')
                 return
 
-    def exists_sensor(self,name):
+    def exists_sensor(name):
         response = open_url(url_sensor % (domoticzurl))
         data = json.loads(response.read())
         if 'result' in data:
