@@ -40,7 +40,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     url_per = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s'
     url_hardware_add = 'http://%s/json.htm?type=command&param=addhardware&htype=15&port=1&name=%s&enabled=true'
     url_hardware = 'http://%s/json.htm?type=hardware'
-    url_sensor = 'http://%s/json.htm?type=devices&filter=utility&used=false&order=Name'
+    url_sensor = 'http://%s/json.htm?type=devices&filter=utility&order=Name'
     url_sensor_add = 'http://%s/json.htm?type=createvirtualsensor&idx=%s&sensorname=%s&sensortype=%s'
     url_sensor_ren = 'http://%s/json.htm?type=command&param=renamedevice&idx=%s&name=%s'
 
