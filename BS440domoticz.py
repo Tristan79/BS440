@@ -100,46 +100,47 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         except:
             return False
         return True
+        
+    try:
+        if check('fat_id'):
+            config.get(personsection, 'fat_id')
+        else:
+            fatid = use_virtual_sensor(user + ' Fat Percentage',SensorPercentage)
+            config.set(personsection, 'fat_id', fatid)
 
-    if check('fat_id'):
-        config.get(personsection, 'fat_id')
-    else:
-        fatid = use_virtual_sensor(user + ' Fat Percentage',SensorPercentage)
-        config.set(personsection, 'fat_id', fatid)
+        if check('bmr_id'):
+            config.get(personsection, 'bmr_id')
+        else:
+            kcalid = use_virtual_sensor(user + ' BMR',SensorCustom,'1;Calories')
+            config.set(personsection, 'bmr_id', kcalid)
 
-    if check('bmr_id'):
-        config.get(personsection, 'bmr_id')
-    else:
-        kcalid = use_virtual_sensor(user + ' BMR',SensorCustom,'1;Calories')
-        config.set(personsection, 'bmr_id', kcalid)
+        if check('muscle_id'):
+            config.get(personsection, 'muscle_id')
+        else:
+            muscleid = use_virtual_sensor(user + ' Muscle Percentage',SensorPercentage)
+            config.set(personsection, 'muscle_id', muscleid)
 
-    if check('muscle_id'):
-        config.get(personsection, 'muscle_id')
-    else:
-        muscleid = use_virtual_sensor(user + ' Muscle Percentage',SensorPercentage)
-        config.set(personsection, 'muscle_id', muscleid)
+        if check('bone_id'):
+            config.get(personsection, 'bone_id')
+        else:
+            boneid  = use_virtual_sensor(user + ' Bone Percentage',SensorPercentage)
 
-    if check('bone_id'):
-        config.get(personsection, 'bone_id')
-    else:
-        boneid  = use_virtual_sensor(user + ' Bone Percentage',SensorPercentage)
+        if check('water_id'):
+            config.get(personsection, 'water_id')
+        else:
+            waterid = use_virtual_sensor(user + ' Water Percentage',SensorPercentage)
 
-    if check('water_id'):
-        config.get(personsection, 'water_id')
-    else:
-        waterid = use_virtual_sensor(user + ' Water Percentage',SensorPercentage)
+        if check('bmi_id'):
+            config.get(personsection, 'bmi_id')
+        else:
+            bmiid = use_virtual_sensor(user + ' BMI',SensorCustom,'1;')
+            config.set(personsection, 'bmi_id', bmiid)
 
-    if check('bmi_id'):
-        config.get(personsection, 'bmi_id')
-    else:
-        bmiid = use_virtual_sensor(user + ' BMI',SensorCustom,'1;')
-        config.set(personsection, 'bmi_id', bmiid)
-
-    if check('lbm_id'):
-        config.get(personsection, 'lbm_id')
-    else:
-        lbmid = use_virtual_sensor(user + ' Lean Body Mass Percentage',SensorPercentage)
-        config.set(personsection, 'lbm_id', lbmid)
+        if check('lbm_id'):
+            config.get(personsection, 'lbm_id')
+        else:
+            lbmid = use_virtual_sensor(user + ' Lean Body Mass Percentage',SensorPercentage)
+            config.set(personsection, 'lbm_id', lbmid)
 
     except Exception, e:
         print str(e)
