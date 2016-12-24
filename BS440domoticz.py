@@ -35,6 +35,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     url_sensor = 'http://%s/json.htm?type=devices&filter=utility&used=true&order=Name'
     url_sensor_add = 'http://%s/json.htm?type=createvirtualsensor&idx=%s&sensorname=%s&sensortype=%s'
 
+    write_config = False
+
     def open_url(url):
         log.debug('Opening url: %s' % (url))
         try:
@@ -82,9 +84,10 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             if options != '':
                 url = url + '&sensoroptions=' + options
             response = open_url(url)
-            x = exists_sensor(name)
-            print exists_sensor(name)
-            return x
+            write_config = True
+            return exists_sensor(name)
+            
+            
 
     SensorPercentage = 2
     SensorCustom     = 1004
@@ -92,17 +95,60 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
     # create or discover sensors
     try:
+        def check(name):
+            try:
+                config.get(personsection, name)
+            except:
+                return False
+            return True
+
+    if check('fat_id'):
+        config.get(personsection, 'fat_id')
+    else:
         fatid = use_virtual_sensor(user + ' Fat Percentage',SensorPercentage)
-        kcalid = use_virtual_sensor(user + ' BMR',SensorCustom,'1;calories')
+        config.set(personsection, 'fat_id', fatid)
+
+    if check('bmr_id'):
+        config.get(personsection, 'bmr_id')
+    else:
+        kcalid = use_virtual_sensor(user + ' BMR',SensorCustom,'1;Calories')
+        config.set(personsection, 'bmr_id', kcalid)
+
+    if check('muscle_id'):
+        config.get(personsection, 'muscle_id')
+    else:
         muscleid = use_virtual_sensor(user + ' Muscle Percentage',SensorPercentage)
+        config.set(personsection, 'muscle_id', muscleid)
+
+    if check('bone_id'):
+        config.get(personsection, 'bone_id')
+    else:
         boneid  = use_virtual_sensor(user + ' Bone Percentage',SensorPercentage)
+
+    if check('water_id'):
+        config.get(personsection, 'water_id')
+    else:
         waterid = use_virtual_sensor(user + ' Water Percentage',SensorPercentage)
+
+    if check('bmi_id'):
+        config.get(personsection, 'bmi_id')
+    else:
         bmiid = use_virtual_sensor(user + ' BMI',SensorCustom,'1;')
-        lbsid = use_virtual_sensor(user + ' Lean Body Mass Percentage',SensorPercentage)
+        config.set(personsection, 'bmi_id', bmiid)
+
+    if check('lbm_id'):
+        config.get(personsection, 'lbm_id')
+    else:
+        lbmid = use_virtual_sensor(user + ' Lean Body Mass Percentage',SensorPercentage)
+        config.set(personsection, 'lbm_id', lbmid)
+
     except Exception, e:
         print str(e)
         log.error('Unable to access Domoticz sensors')
         return
+
+    if write_config:
+        config.write()
 
     return
     try:
@@ -117,8 +163,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         muscle_mass = (muscle_per / 100) * weight
         bone_mass = bodydata[0]['bone']
         bone_per = (bone_mass / weight) * 100
-        lbs_mass = weight - (weight * (fat_per / 100.0))
-        lbs_per = (lbs_mass / weight) * 100
+        lbm = weight - (weight * (fat_per / 100.0))
+        lbm_per = (lbm / weight) * 100
         kcal = bodydata[0]['kcal']
         bmi = 0
         for user in persondata:
@@ -147,8 +193,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.info((log_update+'bone mass %s') % (user, id+4, bone_mass))
         open_url(url_mass % (domoticzurl, hardwareid, id+4, unit, bone_mass))
 
-        log.info((log_update+'lean body mass %s') % (user, id+5, lbs_mass))
-        open_url(url_mass % (domoticzurl, hardwareid, id+5, unit, lbs_mass))
+        log.info((log_update+'lean body mass %s') % (user, id+5, lbm))
+        open_url(url_mass % (domoticzurl, hardwareid, id+5, unit, lbm))
 
         # Percentage
 
@@ -164,8 +210,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.info((log_update+'bone percentage %s') % (user, boneid, bone_per))
         open_url(url_per % (domoticzurl, boneid, bone_per))
 
-        log.info((log_update+'lean body mass percentage %s') % (user, lbsid, lbs_per))
-        open_url(url_per % (domoticzurl, lbsid, lbs_per))
+        log.info((log_update+'lean body mass percentage %s') % (user, lbmid, lbm_per))
+        open_url(url_per % (domoticzurl, lbmid, lbm_per))
         
         # Other
         
