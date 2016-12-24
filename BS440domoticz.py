@@ -16,14 +16,16 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     domoticzpwd = ""
   
     # read user's name
-    personsection = 'Person.Person1' # + str(weightdata[0]['person'])
+    """
+    personsection = 'Person' + str(weightdata[0]['person'])
     if config.has_section(personsection):
         user = config.get(personsection, 'username')
     else:
         log.error('Unable to update Domoticz: No details found in ini file '
                   'for person %d' % (weightdata[0]['person']))
         return
-
+    """
+    user = Tristan
     url_mass = 'http://%s/json.htm?type=command&param=udevice&hid=%s&' \
               'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s'
     url_per = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s'
