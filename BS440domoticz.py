@@ -98,9 +98,9 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
 
     # create or discover sensors
-    def check(name,personsection):
+    def check(name):
         try:
-            config.get(personsection, name)
+            configDomoticz.get(personsection, name)
         except:
             return False
         return True
@@ -112,7 +112,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             pass
 
         if check('fat_id'):
-            config.get(personsection, 'fat_id')
+            configDomoticz.get(personsection, 'fat_id')
         else:
             print "HERE"
             fatid = use_virtual_sensor(user + ' Fat Percentage',SensorPercentage)
