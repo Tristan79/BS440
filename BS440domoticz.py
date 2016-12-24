@@ -21,6 +21,12 @@ configDomoticz.read('BS440domoticz.ini')
 def UpdateDomoticz(config, weightdata, bodydata, persondata):
     log = logging.getLogger(__name__)
     domoticzurl = config.get('Domoticz', 'domoticz_url')
+    
+    try:
+        hardwarename = config.get('Domoticz', 'hardware_name')
+    else:
+        hardwarename = "Medisana"
+
     domoticzuser = ""
     domoticzpwd = ""
   
@@ -64,15 +70,15 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return 'None'
 
     # Check if hardware exists and add if not..
-    harwarename = 'Medisana'
+    harwdarename = 'Medisana'
 
     write_config = False
 
-    hardwareid = exists_hardware(harwarename)
+    hardwareid = exists_hardware(hardwarename)
 
     if 'None' == hardwareid:
-        response = open_url(url_hardware_add % (domoticzurl, harwarename.replace(' ', '%20')))
-        hardwareid = exists_hardware(harwarename)
+        response = open_url(url_hardware_add % (domoticzurl, hardwarename.replace(' ', '%20')))
+        hardwareid = exists_hardware(hardwarename)
         if 'None' == hardwareid:
                 log.error('Unable to access Domoticz hardware')
                 return
