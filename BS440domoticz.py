@@ -13,6 +13,7 @@ from ConfigParser import *
 write_config = False
 
 data = '{}'
+query = True
 
 configDomoticz = SafeConfigParser()
 configDomoticz.read('BS440domoticz.ini')
