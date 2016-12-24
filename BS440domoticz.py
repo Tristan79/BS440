@@ -107,7 +107,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
     try:
         try:
-            config.add_section(personsection)
+            configDomoticz.add_section(personsection)
         except DuplicateSectionError:
             pass
 
@@ -159,7 +159,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
     if write_config:
         with open('BS440domoticz.ini', 'wb') as configfile:
-            config.write(configfile)
+            configDomoticz.write(configfile)
             configfile.close()
 
     return
