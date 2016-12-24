@@ -185,7 +185,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         watermassunit = 1
         musclemassunit = 1
         bonemassunit = 1
-        bmunit6 = 1
+        lbmunit = 1
     except Exception, e:
         print str(e)
         log.error('Unable to access Domoticz sensors')
