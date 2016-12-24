@@ -121,6 +121,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         global query
         global data
         if query:
+            print "HIER"
             response = open_url(url_sensor % (domoticzurl))
             data = json.loads(response.read())
             query = False
@@ -191,6 +192,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         
         # Mass
         weightid = get_realid('weight_id',79)
+        print weightid
         fatmassid = get_realid('fat_mass_id',80)
         watermassid = get_realid('watermass_id',81)
         musclemassid = get_realid('muscle_mass_id',82)
