@@ -71,9 +71,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return 'None'
 
     # Check if hardware exists and add if not..
-    harwdarename = 'Medisana'
-
-    write_config = False
 
     hardwareid = exists_hardware(hardwarename)
 
@@ -83,7 +80,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         if 'None' == hardwareid:
                 log.error('Unable to access Domoticz hardware')
                 return
-
 
     def rename_sensors(sensorid,name):
         try:
@@ -121,7 +117,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         global query
         global data
         if query:
-            print "HIER"
             response = open_url(url_sensor % (domoticzurl))
             data = json.loads(response.read())
             query = False
@@ -131,7 +126,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                     return [data['result'][i]['idx'],data['result'][i]['Name']]
         return ["",""]
 
-
     def rename_realid(id,newname):
         global query
         query = True
@@ -139,7 +133,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         if d[1] == "Unknown":
             rename_sensors(d[0],newname)
             query = True
-
 
     def use_virtual_sensor(name,type,options=''):
         global query
@@ -153,10 +146,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             response = open_url(url)
             query = True
             return exists_sensor(name)
-
-    SensorPercentage = 2
-    SensorCustom     = 1004
-   
 
     # create or discover sensors
     def get_id(iniid,text,type,options=""):
@@ -178,6 +167,9 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             configDomoticz.set(personsection, iniid, str(default))
             return default
 
+    SensorPercentage = 2
+    SensorCustom     = 1004
+
     try:
         try:
             configDomoticz.add_section(personsection)
@@ -193,7 +185,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         
         # Mass
         weightid = get_realid('weight_id',79)
-        print weightid
         fatmassid = get_realid('fat_mass_id',80)
         watermassid = get_realid('watermass_id',81)
         musclemassid = get_realid('muscle_mass_id',82)
@@ -206,15 +197,14 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         bonemassunit = get_realid('bonemass_unit',1)
         lbmunit = get_realid('lbm_unit',1)
         
-    except Exception, e:
-        print str(e)
+    except:
         log.error('Unable to access Domoticz sensors')
         return
 
     write_config = True
 
     if write_config:
-        with open('BS440domoticz.ini', 'wb') as configfile:
+        with open('BS440.domoticz.ini', 'wb') as configfile:
             configDomoticz.write(configfile)
             configfile.close()
             write_config = False
@@ -240,6 +230,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                 bmi = weight / (size * size)
 
         log_update = 'Updating Domoticz for user %s at index %s with '
+
+        # Mass
 
         log.info((log_update+'weight %s') % (user, weightid, weight))
         open_url(url_mass % (domoticzurl, hardwareid, weightid, weightunit, weight))
@@ -277,15 +269,13 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         open_url(url_per % (domoticzurl, lbmperid, lbm_per))
         
         # Other
+
         log.info((log_update+'basal metabolic rate calories %s') % (user, bmrid, kcal))
         open_url(url_per  % (domoticzurl, bmrid, kcal))
             
         log.info((log_update+'body mass index %s') % (user, bmiid, bmi))
         open_url(url_per  % (domoticzurl, bmiid, bmi))
 
-        log.info('Domoticz succesfully updated')
-
-        time.sleep(2)
         rename_realid(weightid,user + " " + 'Weight')
         rename_realid(fatmassid,user + " " + 'Fat Mass')
         rename_realid(musclemassid,user + " " + 'Muscle Mass')
@@ -293,7 +283,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         rename_realid(bonemassid,user + " " + 'Bone Mass')
         rename_realid(lbmid,user + " " + 'Lean Body Mass')
 
-    except Exception, e:
-        print str(traceback.format_exc())
-        print str(e)
+        log.info('Domoticz succesfully updated')
+
+    except:
         log.error('Unable to update Domoticz: Error sending data.')
