@@ -120,8 +120,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         if 'result' in data:
             for i in range(0,len(data['result'])):
                 if int(hardwareid) == data['result'][i]['HardwareID']:
-                    print data['result'][i]['ID'] == str(realid)
-                    print data['result'][i]['Name']
+                    #print data['result'][i]['ID'] == str(realid)
+                    #print data['result'][i]['Name']
                     if int(realid) == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
                         
                         return [data['result'][i]['idx'],data['result'][i]['Name']]
@@ -131,7 +131,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     def rename_realid(id,newname):
         query = True
         d = exists_realid(id)
-        print d
+        if d[0] != "":
+            print d
         if d[1] == "Unknown":
             rename_sensors(d[0],d[1])
             query = True
