@@ -25,7 +25,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                   'for person %d' % (weightdata[0]['person']))
         return
     """
-    user = Tristan
+    user = 'Tristan'
+    
     url_mass = 'http://%s/json.htm?type=command&param=udevice&hid=%s&' \
               'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s'
     url_per = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s'
