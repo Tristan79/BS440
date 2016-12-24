@@ -158,6 +158,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return
 
     if write_config:
+        print "HERE2"
         with open('BS440domoticz.ini', 'wb') as configfile:
             configDomoticz.write(configfile)
             configfile.close()
