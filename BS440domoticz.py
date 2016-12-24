@@ -73,7 +73,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                   scaleuser, tbwid, bodydata[0]['tbw']))
         callurl('http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (
                domoticzurl, tbwid, bodydata[0]['tbw']))
-        
+
         for i in persondata:
             if i['person'] == bodydata[0]['person']:
                 size = i['size'] / 100.0
@@ -86,5 +86,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
 
         log.info('Domoticz succesfully updated')
-    except:
+    except Exception, e:
+        print str(e)
         log.error('Unable to update Domoticz: Error sending data.')
