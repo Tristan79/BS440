@@ -231,7 +231,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         
         # Other
         log.info((log_update+'basal metabolic rate calories %s') % (user, bmrid, kcal))
-        open_url(url_per  % (domoticzurl, bmridid, kcal))
+        open_url(url_per  % (domoticzurl, bmrid, kcal))
             
         log.info((log_update+'body mass index %s') % (user, bmiid, bmi))
         open_url(url_per  % (domoticzurl, bmiid, bmi))
