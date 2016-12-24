@@ -41,8 +41,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     url_sensor = 'http://%s/json.htm?type=devices&filter=utility&used=true&order=Name'
     url_sensor_add = 'http://%s/json.htm?type=createvirtualsensor&idx=%s&sensorname=%s&sensortype=%s'
 
-    write_config = False
-
     def open_url(url):
         log.debug('Opening url: %s' % (url))
         try:
@@ -63,6 +61,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
     # Check if hardware exists and add if not..
     harwarename = 'Medisana'
+
     hardwareid = exists_hardware(harwarename)
     if 'None' == hardwareid:
         response = open_url(url_hardware_add % (domoticzurl, harwarename.replace(' ', '%20')))
@@ -94,7 +93,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
     SensorPercentage = 2
     SensorCustom     = 1004
-
+   
+    write_config = False
 
     # create or discover sensors
     def get_id(iniid,text,type,options=""):
@@ -107,6 +107,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             configDomoticz.set(personsection, iniid, rid)
             write_config = True
         return rid
+        
+    print write_config
 
     try:
         try:
