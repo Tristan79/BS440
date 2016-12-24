@@ -117,6 +117,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             response = open_url(url_sensor % (domoticzurl))
             data = json.loads(response.read())
             query = False
+        print "HERE#@##@#"
         if 'result' in data:
             for i in range(0,len(data['result'])):
                 if realid == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
