@@ -105,7 +105,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         except:
             rid = use_virtual_sensor(user + ' ' + text,type,options)
             configDomoticz.set(personsection, iniid, rid)
-            write_config = True
+        write_config = True
         return rid
         
     print write_config
