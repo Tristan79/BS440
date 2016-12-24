@@ -81,12 +81,11 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                 return
 
 
-    def rename_sensor(sensorid,name):
+    def rename_sensors(sensorid,name):
         try:
             response = open_url(url_sensor_ren % (domoticzurl,sensorid,name))
         except:
             pass
-
 
     def exists_sensor(name):
         global query
@@ -131,7 +130,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     SensorCustom     = 1004
    
 
-
     # create or discover sensors
     def get_id(iniid,text,type,options=""):
         try:
@@ -151,8 +149,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         except DuplicateSectionError:
             pass
         fatid = get_id('fat_id','Fat Percentage',SensorPercentage)
-        print "f"
-        print fatid
         bmrid = get_id('bmr_id','BMR',SensorCustom,'1;Calories')
         muscleid = get_id('muscle_id','Muscle Percentage',SensorPercentage)
         boneid = get_id('bone_id','Bone Percentage',SensorPercentage)
@@ -171,7 +167,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             configDomoticz.write(configfile)
             configfile.close()
 
-    return
     try:
         
         # calculate and populate variables
