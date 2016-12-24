@@ -53,16 +53,12 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
 
     def exists_sensor(name):
-        print "NAME: " + name
+        
         response = open_url(url_sensor % (domoticzurl))
         data = json.loads(response.read())
         if 'result' in data:
             for i in range(0,len(data['result'])):
-                print data['result'][i]['HardwareID']
-                print data['result'][i]['Name']
-                print name
-                if name == data['result'][i]['Name'] and hardwareid == data['result'][i]['HardwareID']:
-                    print data['result'][i]['idx']
+                if name == data['result'][i]['Name'] and int(hardwareid) == data['result'][i]['HardwareID']:
                     return data['result'][i]['idx']
         return 'None'
 
