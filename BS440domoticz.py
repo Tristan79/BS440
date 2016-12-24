@@ -117,12 +117,12 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             response = open_url(url_sensor % (domoticzurl))
             data = json.loads(response.read())
             query = False
-        print data
         if 'result' in data:
             for i in range(0,len(data['result'])):
                 if int(hardwareid) == data['result'][i]['HardwareID']:
                     print data['result'][i]['ID']
                     if realid == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
+                        print data['result'][i]['Name']
                         return [data['result'][i]['idx'],data['result'][i]['Name']]
         return ["",""]
 
@@ -131,7 +131,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         query = True
         d = exists_realid(id)
         print d
-        print "HERE"
         if d[1] == "Unknown":
             rename_sensors(d[0],d[1])
             query = True
