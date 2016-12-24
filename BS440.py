@@ -9,7 +9,7 @@ from binascii import hexlify
 from BS440decode import *
 from BS440mail import *
 from BS440domoticz import *
-from BS440google import *
+#from BS440google import *
 
 
 
