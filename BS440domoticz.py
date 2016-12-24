@@ -97,75 +97,34 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
 
     # create or discover sensors
-    def check(name):
+    def get_id(iniid,text,type,options=""):
         try:
-            configDomoticz.get(personsection, name)
+            rid = configDomoticz.get(personsection, iniid)
+            #if not exists_id(id)
         except:
-            return False
-        return True
+            rid = use_virtual_sensor(user + ' ' + text,type)
+            configDomoticz.set(personsection, iniid, rid)
+            write_config = True
+        return rid
 
     try:
         try:
             configDomoticz.add_section(personsection)
         except DuplicateSectionError:
             pass
-
-        if check('fat_id'):
-            configDomoticz.get(personsection, 'fat_id')
-        else:
-            fatid = use_virtual_sensor(user + ' Fat Percentage',SensorPercentage)
-            configDomoticz.set(personsection, 'fat_id', fatid)
-            write_config = True
-
-        if check('bmr_id'):
-            configDomoticz.get(personsection, 'bmr_id')
-        else:
-            kcalid = use_virtual_sensor(user + ' BMR',SensorCustom,'1;Calories')
-            configDomoticz.set(personsection, 'bmr_id', kcalid)
-            write_config = True
-
-        if check('muscle_id'):
-            configDomoticz.get(personsection, 'muscle_id')
-        else:
-            muscleid = use_virtual_sensor(user + ' Muscle Percentage',SensorPercentage)
-            configDomoticz.set(personsection, 'muscle_id', muscleid)
-            write_config = True
-
-        if check('bone_id'):
-            configDomoticz.get(personsection, 'bone_id')
-        else:
-            boneid  = use_virtual_sensor(user + ' Bone Percentage',SensorPercentage)
-            configDomoticz.set(personsection, 'bone_id',boneid)
-            write_config = True
-
-        if check('water_id'):
-            configDomoticz.get(personsection, 'water_id')
-        else:
-            waterid = use_virtual_sensor(user + ' Water Percentage',SensorPercentage)
-            configDomoticz.set(personsection, 'water_id',waterid)
-            write_config = True
-
-        if check('bmi_id'):
-            configDomoticz.get(personsection, 'bmi_id')
-        else:
-            bmiid = use_virtual_sensor(user + ' BMI',SensorCustom,'1;')
-            configDomoticz.set(personsection, 'bmi_id', bmiid)
-            write_config = True
-
-        if check('lbm_id'):
-            configDomoticz.get(personsection, 'lbm_id')
-        else:
-            lbmid = use_virtual_sensor(user + ' Lean Body Mass Percentage',SensorPercentage)
-            configDomoticz.set(personsection, 'lbm_id', lbmid)
-            write_config = True
-
+        fatid = get_id('fat_id','Fat Percentage',SensorPercentage)
+        bmrid = get_id('bmr_id','BMR',SensorCustom,'1;Calories')
+        muscleid = get_id('muscle_id','Muscle Percentage',SensorPercentage)
+        boneid = get_id('bone_id','Bone Percentage',SensorPercentage)
+        waterid = get_id('water_id','Water Percentage',SensorPercentage)
+        lbmid = get_id('lbm_id','Water Percentage',SensorPercentage)
+        bmiid = get_id('bmi_id','BMI',SensorCustom,'1;')
     except Exception, e:
         print str(e)
         log.error('Unable to access Domoticz sensors')
         return
 
     if write_config:
-        print "HERE2"
         with open('BS440domoticz.ini', 'wb') as configfile:
             configDomoticz.write(configfile)
             configfile.close()
