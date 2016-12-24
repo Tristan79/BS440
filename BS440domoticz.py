@@ -59,6 +59,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         if 'result' in data:
             for i in range(0,len(data['result'])):
                 if name == data['result'][i]['Name'] and int(hardwareid) == data['result'][i]['HardwareID']:
+                    print data['result'][i]['idx']
                     return data['result'][i]['idx']
         return 'None'
 
@@ -73,7 +74,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                 url = url + '&sensoroptions=' + options
             response = open_url(url)
             x = exists_sensor(name)
-            print str(x)
+            print exists_sensor(name)
             return x
 
     SensorPercentage = 2
