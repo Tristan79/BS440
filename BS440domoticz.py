@@ -14,7 +14,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     personsection = 'Person' + str(weightdata[0]['person'])
     if config.has_section(personsection):
         weightid = config.get(personsection, 'weight_id')
-        weighthid = config.get(personsection, 'weigt_hid')
+        weighthid = config.get(personsection, 'weight_hid')
         weightdunit = config.get(personsection, 'weigth_dunit')
         fatid = config.get(personsection, 'fat_id')
         kcalid = config.get(personsection, 'kcal_id')
