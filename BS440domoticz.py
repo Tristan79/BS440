@@ -16,8 +16,10 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     domoticzpwd = ""
   
     # read user's name
+    personsection = 'Person1'
     """
     personsection = 'Person' + str(weightdata[0]['person'])
+    
     if config.has_section(personsection):
         user = config.get(personsection, 'username')
     else:
@@ -100,7 +102,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         except:
             return False
         return True
-        
+
     try:
         if check('fat_id'):
             config.get(personsection, 'fat_id')
