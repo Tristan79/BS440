@@ -282,14 +282,14 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
         log.info('Domoticz succesfully updated')
 
-        Time.sleep(.5)
+        time.sleep(.5)
         rename_realid(weightid,user + " " + 'Weight')
         rename_realid(fatmassid,user + " " + 'Fat Mass')
         rename_realid(musclemassid,user + " " + 'Muscle Mass')
         rename_realid(watermassid,user + " " + 'Muscle Mass')
         rename_realid(bonemassid,user + " " + 'Bone Mass')
         rename_realid(lbmid,user + " " + 'Lean Body Mass')
-        
+
     except Exception, e:
         print str(traceback.format_exc())
         print str(e)
