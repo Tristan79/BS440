@@ -9,7 +9,10 @@ import logging
 import traceback
 import json
 from ConfigParser import *
+
 write_config = False
+query = True
+data = '{}'
 
 configDomoticz = SafeConfigParser()
 configDomoticz.read('BS440domoticz.ini')
@@ -54,7 +57,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     def exists_hardware(name):
         response = open_url(url_hardware % (domoticzurl))
         data = json.loads(response.read())
-        if "result" in data:
+        if 'result' in data:
             for i in range(0,len(data['result'])):
                 if name == data['result'][i]['Name']:
                     return data['result'][i]['idx']
@@ -72,13 +75,30 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                 return
 
     def exists_sensor(name):
-        response = open_url(url_sensor % (domoticzurl))
-        data = json.loads(response.read())
+        if not query:
+            data = json_result
+        else:
+            response = open_url(url_sensor % (domoticzurl))
+            data = json.loads(response.read())
+            query = False
         if 'result' in data:
             for i in range(0,len(data['result'])):
                 if name == data['result'][i]['Name'] and int(hardwareid) == data['result'][i]['HardwareID']:
                     return data['result'][i]['idx']
         return 'None'
+
+    def exists_id(idx):
+        if not query:
+            data = json_result
+        else:
+            response = open_url(url_sensor % (domoticzurl))
+            data = json.loads(response.read())
+            query = False
+        if 'result' in data:
+            for i in range(0,len(data['result'])):
+                if idx == data['result'][i]['idx'] and int(hardwareid) == data['result'][i]['HardwareID']:
+                    return True
+        return False
 
     def use_virtual_sensor(name,type,options=''):
         idx = exists_sensor(name)
@@ -89,6 +109,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             if options != '':
                 url = url + '&sensoroptions=' + options
             response = open_url(url)
+            query = True
             return exists_sensor(name)
 
     SensorPercentage = 2
@@ -101,12 +122,12 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         try:
             write_config = True
             rid = configDomoticz.get(personsection, iniid)
-            #if not exists_id(id)
-            
+            if not exists_id(id):
+                raise Exception
         except:
             rid = use_virtual_sensor(user + ' ' + text,type,options)
             configDomoticz.set(personsection, iniid, rid)
-        write_config = True
+            write_config = True
         return rid
         
 
