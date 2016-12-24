@@ -117,11 +117,13 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             response = open_url(url_sensor % (domoticzurl))
             data = json.loads(response.read())
             query = False
-        print "HERE#@##@#"
+        print data
         if 'result' in data:
             for i in range(0,len(data['result'])):
-                if realid == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
-                    return [data['result'][i]['idx'],data['result'][i]['Name']]
+                if int(hardwareid) == data['result'][i]['HardwareID']:
+                    print data['result'][i]['ID']
+                    if realid == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
+                        return [data['result'][i]['idx'],data['result'][i]['Name']]
         return ["",""]
 
 
@@ -180,11 +182,11 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         
         # Mass
         weightid = 79
-        fatmassid = 81
-        watermassid = 82
-        musclemassid = 83
-        bonemassid = 84
-        lbmid = 85
+        fatmassid = 80
+        watermassid = 81
+        musclemassid = 82
+        bonemassid = 83
+        lbmid = 84
         weightunit = 1
         fatmassunit = 1
         watermassunit = 1
@@ -244,9 +246,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.info((log_update+'lean body mass %s') % (user, lbmid, lbm))
         open_url(url_mass % (domoticzurl, hardwareid, lbmid, lbmunit, lbm))
 
-        print "HERE"
-        print weightid
-        print user
         rename_realid(weightid,user + " " + 'Weight')
         rename_realid(fatmassid,user + " " + 'Fat Mass')
         rename_realid(muscleid,user + " " + 'Muscle Mass')
