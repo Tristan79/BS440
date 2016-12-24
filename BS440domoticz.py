@@ -282,7 +282,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
         log.info('Domoticz succesfully updated')
 
-        time.sleep(.5)
+        time.sleep(2)
         rename_realid(weightid,user + " " + 'Weight')
         rename_realid(fatmassid,user + " " + 'Fat Mass')
         rename_realid(musclemassid,user + " " + 'Muscle Mass')
