@@ -45,6 +45,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     url_hardware = 'http://%s/json.htm?type=hardware'
     url_sensor = 'http://%s/json.htm?type=devices&filter=utility&used=true&order=Name'
     url_sensor_add = 'http://%s/json.htm?type=createvirtualsensor&idx=%s&sensorname=%s&sensortype=%s'
+    url_sensor_ren = 'http://%s/json.htm?type=command&param=renamedevice&idx=%s&name=%s'
+
 
     def open_url(url):
         log.debug('Opening url: %s' % (url))
@@ -77,6 +79,13 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         if 'None' == hardwareid:
                 log.error('Unable to access Domoticz hardware')
                 return
+
+
+    def rename_sensor(sensorid,name):
+        try:
+            response = open_url(url_sensor_ren % (domoticzurl,sensorid,name))
+        except:
+            pass
 
 
     def exists_sensor(name):

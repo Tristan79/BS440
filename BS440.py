@@ -113,9 +113,9 @@ adapter = pygatt.backends.GATTToolBackend()
 adapter.start()
 
 while True:
-    persondata = []
-    weightdata = []
-    bodydata = []
+    persondata = [{'gender': 'male', 'age': 37, 'person': 1, 'valid': True, 'activity': 'normal', 'size': 18}]
+    weightdata = [{'timestamp': 1482542877, 'valid': True, 'weight': 81.3, 'person': 1}]
+    bodydata = [{'timestamp': 1482544748, 'tbw': 62.6, 'person': 1, 'valid': True, 'fat': 17.2, 'muscle': 41.7, 'kcal': 2888, 'bone': 3.6}]
         
     if config.has_section('Domoticz'):
         UpdateDomoticz(config, weightdata, bodydata, persondata)
