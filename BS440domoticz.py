@@ -76,7 +76,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log_update = 'Updating Domoticz for user %s at index %s with '
        
         # Mass
-        log.info(log_update+'weight %s' % (user, id, weight))
+        log.info((log_update+'weight %s') % (user, id, weight))
         callurl(url_mass % (domoticzurl, hardwareid, id, unit, weight))
 
         log.info(log_update+'fat mass %s' % (user, id+1, fat_mass))
