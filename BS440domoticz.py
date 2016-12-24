@@ -88,8 +88,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             response = open_url(url)
             write_config = True
             return exists_sensor(name)
-            
-            
 
     SensorPercentage = 2
     SensorCustom     = 1004
@@ -149,8 +147,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.error('Unable to access Domoticz sensors')
         return
 
-    if write_config:
-        config.write()
+    config.write()
 
     return
     try:
