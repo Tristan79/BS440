@@ -102,7 +102,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             rid = configDomoticz.get(personsection, iniid)
             #if not exists_id(id)
         except:
-            rid = use_virtual_sensor(user + ' ' + text,type)
+            rid = use_virtual_sensor(user + ' ' + text,type,options)
             configDomoticz.set(personsection, iniid, rid)
             write_config = True
         return rid
