@@ -20,7 +20,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     url_hardware_add = 'http://%s/json.htm?type=command&param=addhardware&htype=15&port=1&name=%s&enabled=true'
     url_hardware = 'http://%s/json.htm?type=hardware'
 
-   def open_url(url):
+    def open_url(url):
         log.debug('Opening url: %s' % (url))
         try:
             response = urllib.urlopen(url)
