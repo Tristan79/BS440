@@ -6,6 +6,7 @@ Update weight value to Domoticz home automation system
 import urllib
 import base64
 import logging
+import traceback
 
 
 def UpdateDomoticz(config, weightdata, bodydata, persondata):
@@ -78,7 +79,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             if i['person'] == bodydata[0]['person']:
                 size = i['size'] / 100.0
                 bmi = weightdata[0]['weight'] / (size * size)
-
+                print bmi
                 log.info('Updating Domoticz for user %s at index %s with BMI %s' % (
                           scaleuser, bmiid, bodydata[0]['bmi']))
                 callurl('http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (
@@ -87,5 +88,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
         log.info('Domoticz succesfully updated')
     except Exception, e:
+        print str(traceback.format_exc())
         print str(e)
         log.error('Unable to update Domoticz: Error sending data.')
