@@ -128,6 +128,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             (idx, name) = exists_realid(id)
             if name == "Unknown":
                 rename_sensors(idx,newname)
+                query = True
 
 
     def use_virtual_sensor(name,type,options=''):
@@ -239,7 +240,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.info((log_update+'lean body mass %s') % (user, lbmid, lbm))
         open_url(url_mass % (domoticzurl, hardwareid, lbmid, lbmunit, lbm))
 
-        query = True
         rename_realid(weightid,user + " " + 'Weight')
         rename_realid(fatmassid,user + " " + 'Fat Mass')
         rename_realid(muscleid,user + " " + 'Muscle Mass')
