@@ -166,7 +166,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             return configDomoticz.get(personsection, iniid)
         except:
             write_config = True
-            configDomoticz.set(personsection, iniid, default)
+            configDomoticz.set(personsection, iniid, str(default))
             return default
 
     try:
