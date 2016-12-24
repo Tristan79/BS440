@@ -67,7 +67,10 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     # Check if hardware exists and add if not..
     harwarename = 'Medisana'
 
+    write_config = False
+
     hardwareid = exists_hardware(harwarename)
+
     if 'None' == hardwareid:
         response = open_url(url_hardware_add % (domoticzurl, harwarename.replace(' ', '%20')))
         hardwareid = exists_hardware(harwarename)
@@ -118,12 +121,11 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     SensorPercentage = 2
     SensorCustom     = 1004
    
-    write_config = False
+
 
     # create or discover sensors
     def get_id(iniid,text,type,options=""):
         try:
-            write_config = True
             rid = configDomoticz.get(personsection, iniid)
             if not exists_id(id):
                 raise Exception
