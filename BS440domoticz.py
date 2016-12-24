@@ -9,6 +9,7 @@ import logging
 import traceback
 import json
 from ConfigParser import *
+write_config = False
 
 configDomoticz = SafeConfigParser()
 configDomoticz.read('BS440domoticz.ini')
@@ -94,7 +95,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     SensorPercentage = 2
     SensorCustom     = 1004
    
-    global write_config
     write_config = False
 
     # create or discover sensors
@@ -110,7 +110,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         write_config = True
         return rid
         
-    print write_config
+    print
 
     try:
         try:
