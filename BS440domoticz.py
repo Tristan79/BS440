@@ -98,7 +98,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
 
     # create or discover sensors
-    def check(name):
+    def check(name,personsection):
         try:
             config.get(personsection, name)
         except:
