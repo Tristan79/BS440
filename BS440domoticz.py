@@ -11,7 +11,7 @@ import json
 from ConfigParser import *
 
 write_config = False
-query = True
+
 data = '{}'
 
 configDomoticz = SafeConfigParser()
@@ -73,6 +73,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         if 'None' == hardwareid:
                 log.error('Unable to access Domoticz hardware')
                 return
+
+    query = True
 
     def exists_sensor(name):
         if not query:
