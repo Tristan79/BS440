@@ -133,6 +133,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
 
     def rename_realid(id,newname):
+        global query
         query = True
         d = exists_realid(id)
         if d[1] == "Unknown":
