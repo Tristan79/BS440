@@ -59,6 +59,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             for i in range(0,len(data['result'])):
                 print data['result'][i]['HardwareID']
                 print data['result'][i]['Name']
+                print name
                 if name == data['result'][i]['Name'] and hardwareid == data['result'][i]['HardwareID']:
                     print data['result'][i]['idx']
                     return data['result'][i]['idx']
