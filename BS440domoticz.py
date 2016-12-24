@@ -14,6 +14,10 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     hardwareid =  config.get('Domoticz', 'hardware_id')
     domoticzuser = ""
     domoticzpwd = ""
+    
+    # start id of new sensors
+    id = 79
+    unit = 1
 
     # read user's name
     personsection = 'Person' + str(weightdata[0]['person'])
@@ -51,8 +55,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
               'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s'
         url_per = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s'
         
-        id = 79
-        unit = 1
+
 
         # calculate and populate variables
         weight = weightdata[0]['weight']
