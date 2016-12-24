@@ -94,13 +94,12 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
 
     # create or discover sensors
-    try:
-        def check(name):
-            try:
-                config.get(personsection, name)
-            except:
-                return False
-            return True
+    def check(name):
+        try:
+            config.get(personsection, name)
+        except:
+            return False
+        return True
 
     if check('fat_id'):
         config.get(personsection, 'fat_id')
