@@ -62,7 +62,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
 
     def use_virtual_sensor(name,type,options=''):
-        idx = self.exists_sensor(name)
+        idx = exists_sensor(name)
         if 'None' != idx:
             return idx
         if 'None' == idx:
@@ -70,7 +70,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             if options != '':
                 url = url + '&sensoroptions=' + options
             response = open_url(url)
-            x = self.exists_sensor(name)
+            x = exists_sensor(name)
             print x
             return x
 
