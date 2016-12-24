@@ -119,12 +119,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             query = False
         if 'result' in data:
             for i in range(0,len(data['result'])):
-                if int(hardwareid) == data['result'][i]['HardwareID']:
-                    #print data['result'][i]['ID'] == str(realid)
-                    #print data['result'][i]['Name']
-                    if int(realid) == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
-                        
-                        return [data['result'][i]['idx'],data['result'][i]['Name']]
+                if str(realid) == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
+                    return [data['result'][i]['idx'],data['result'][i]['Name']]
         return ["",""]
 
 
