@@ -135,14 +135,14 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             configDomoticz.get(personsection, 'bone_id')
         else:
             boneid  = use_virtual_sensor(user + ' Bone Percentage',SensorPercentage)
-            configDomoticz.get(personsection, 'bone_id',boneid)
+            configDomoticz.set(personsection, 'bone_id',boneid)
             write_config = True
 
         if check('water_id'):
             configDomoticz.get(personsection, 'water_id')
         else:
             waterid = use_virtual_sensor(user + ' Water Percentage',SensorPercentage)
-            configDomoticz.Set(personsection, 'water_id',waterid)
+            configDomoticz.set(personsection, 'water_id',waterid)
             write_config = True
 
         if check('bmi_id'):
