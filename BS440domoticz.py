@@ -244,6 +244,9 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.info((log_update+'lean body mass %s') % (user, lbmid, lbm))
         open_url(url_mass % (domoticzurl, hardwareid, lbmid, lbmunit, lbm))
 
+        print "HERE"
+        print weightid
+        print user
         rename_realid(weightid,user + " " + 'Weight')
         rename_realid(fatmassid,user + " " + 'Fat Mass')
         rename_realid(muscleid,user + " " + 'Muscle Mass')
