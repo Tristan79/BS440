@@ -11,14 +11,45 @@ import traceback
 def UpdateDomoticz(config, weightdata, bodydata, persondata):
     log = logging.getLogger(__name__)
     domoticzurl = config.get('Domoticz', 'domoticz_url')
-    hardwareid =  config.get('Domoticz', 'hardware_id')
     domoticzuser = ""
     domoticzpwd = ""
     
-    # start id of new sensors
-    id = 79
-    unit = 1
+    url_mass = 'http://%s/json.htm?type=command&param=udevice&hid=%s&' \
+              'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s'
+    url_per = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s'
+    url_hardware_add = 'http://%s/json.htm?type=command&param=addhardware&htype=15&port=1&name=%s&enabled=true'
+    url_hardware = 'http://%s/json.htm?type=hardware'
 
+   def open_url(url):
+        log.debug('Opening url: %s' % (url))
+        try:
+            response = urllib.urlopen(url)
+        except Exception, e:
+            log.error('Failed to send data to Domoticz (%s)' % (url))
+            return "{}"
+        return response
+
+    def exists_hardware(name):
+        response = open_url(url_hardware% (domoticzurl))
+        data = json.loads(response.read())
+        if "result" in data:
+            for i in range(0,len(data["result"])):
+                if name == data["result"][i]["Name"]:
+                    return data["result"][i]["idx"]
+        return "None"
+     
+    harwarename = "Medisana"
+    hardwareid = exists_hardware(name)
+    if "None" == hardwareid:
+        response = open_url(url_hardware_add % (domoticzurl, name.replace(" ", "%20")))
+        hardwareid = exists_hardware(name)
+        if "None" == hardwareid:
+                log.error('Unable to access Domoticz hardware')
+                return
+
+    print hardwareid
+
+    return
     # read user's name
     personsection = 'Person' + str(weightdata[0]['person'])
     if config.has_section(personsection):
@@ -44,19 +75,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return
     try:
         
-        def callurl(url):
-            log.debug('calling url: %s' % (url))
-            try:
-                response = urllib.urlopen(url)
-            except Exception, e:
-                log.error('Failed to send data to Domoticz (%s)' % (url))
-
-        url_mass = 'http://%s/json.htm?type=command&param=udevice&hid=%s&' \
-              'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s'
-        url_per = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s'
-        
-
-
         # calculate and populate variables
         weight = weightdata[0]['weight']
         fat_per = bodydata[0]['fat']
@@ -79,48 +97,51 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log_update = 'Updating Domoticz for user %s at index %s with '
        
         # Mass
+        id = 79
+        unit = 1
+
         log.info((log_update+'weight %s') % (user, id, weight))
-        callurl(url_mass % (domoticzurl, hardwareid, id, unit, weight))
+        open_url(url_mass % (domoticzurl, hardwareid, id, unit, weight))
 
         log.info((log_update+'fat mass %s') % (user, id+1, fat_mass))
-        callurl(url_mass % (domoticzurl, hardwareid, id+1, unit, fat_mass))
+        open_url(url_mass % (domoticzurl, hardwareid, id+1, unit, fat_mass))
 
         log.info((log_update+'water mass %s') % (user, id+2, water_mass))
-        callurl(url_mass % (domoticzurl, hardwareid, id+2, unit, water_mass))
+        open_url(url_mass % (domoticzurl, hardwareid, id+2, unit, water_mass))
 
         log.info((log_update+'muscle mass %s') % (user, id+3, muscle_mass))
-        callurl(url_mass % (domoticzurl, hardwareid, id+3, unit, muscle_mass))
+        open_url(url_mass % (domoticzurl, hardwareid, id+3, unit, muscle_mass))
 
         log.info((log_update+'bone mass %s') % (user, id+4, bone_mass))
-        callurl(url_mass % (domoticzurl, hardwareid, id+4, unit, bone_mass))
+        open_url(url_mass % (domoticzurl, hardwareid, id+4, unit, bone_mass))
 
         log.info((log_update+'lean body mass %s') % (user, id+5, lbs_mass))
-        callurl(url_mass % (domoticzurl, hardwareid, id+5, unit, lbs_mass))
+        open_url(url_mass % (domoticzurl, hardwareid, id+5, unit, lbs_mass))
 
         # Percentage
 
         log.info((log_update+'fat percentage %s') % (user, fatid, fat_per))
-        callurl(url_per % (domoticzurl, fatid, fat_per))
+        open_url(url_per % (domoticzurl, fatid, fat_per))
 
         log.info((log_update+'water percentage %s') % (user, waterid, water_per))
-        callurl(url_per % (domoticzurl, waterid, water_per))
+        open_url(url_per % (domoticzurl, waterid, water_per))
                
         log.info((log_update+'muscle percentage %s') % (user, muscleid, muscle_per))
-        callurl(url_per % (domoticzurl, muscleid, muscle_per))
+        open_url(url_per % (domoticzurl, muscleid, muscle_per))
 
         log.info((log_update+'bone percentage %s') % (user, boneid, bone_per))
-        callurl(url_per % (domoticzurl, boneid, bone_per))
+        open_url(url_per % (domoticzurl, boneid, bone_per))
 
         log.info((log_update+'lean body mass percentage %s') % (user, lbsid, lbs_per))
-        callurl(url_per % (domoticzurl, lbsid, lbs_per))
+        open_url(url_per % (domoticzurl, lbsid, lbs_per))
         
         # Other
         
         log.info((log_update+'calories %s') % (user, kcalid, kcal))
-        callurl(url_per  % (domoticzurl, kcalid, kcal))
+        open_url(url_per  % (domoticzurl, kcalid, kcal))
             
         log.info((log_update+'body mass index %s') % (user, bmiid, bmi))
-        callurl(url_per  % (domoticzurl, bmiid, bmi))
+        open_url(url_per  % (domoticzurl, bmiid, bmi))
         
         log.info('Domoticz succesfully updated')
     except Exception, e:

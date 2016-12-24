@@ -119,7 +119,12 @@ while True:
         persondata = []
         weightdata = []
         bodydata = []
+        
+        if config.has_section('Domoticz'):
+        UpdateDomoticz(config, weightdatasorted, bodydatasorted, persondata)
         continue_comms = True
+        
+        return
         '''
         subscribe to characteristics and have processIndication
         process the data received.
@@ -163,12 +168,12 @@ while True:
                     # Sort scale output by timestamp to retrieve most recent three results
                     weightdatasorted = sorted(weightdata, key=lambda k: k['timestamp'], reverse=True)
                     bodydatasorted = sorted(bodydata, key=lambda k: k['timestamp'], reverse=True)
-                    if config.has_section('Email'):
-                        BS440mail(config, persondata, weightdatasorted, bodydatasorted)
+                    #if config.has_section('Email'):
+                    #    BS440mail(config, persondata, weightdatasorted, bodydatasorted)
                     if config.has_section('Domoticz'):
                         UpdateDomoticz(config, weightdatasorted, bodydatasorted, persondata)
-                    if config.has_section('Google'):
-                        UpdateGoogle(config, persondata, weightdatasorted, bodydatasorted)
-                        log.info('Google')
+                    #if config.has_section('Google'):
+                    #    UpdateGoogle(config, persondata, weightdatasorted, bodydatasorted)
+                    #    log.info('Google')
                 else:
                     log.error('Unreliable data received. Unable to process')
