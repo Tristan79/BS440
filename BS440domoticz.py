@@ -6,6 +6,7 @@ Update weight value to Domoticz home automation system
 import urllib
 import base64
 import logging
+import time
 import traceback
 import json
 from ConfigParser import *
@@ -255,13 +256,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.info((log_update+'lean body mass %s') % (user, lbmid, lbm))
         open_url(url_mass % (domoticzurl, hardwareid, lbmid, lbmunit, lbm))
 
-        rename_realid(weightid,user + " " + 'Weight')
-        rename_realid(fatmassid,user + " " + 'Fat Mass')
-        rename_realid(musclemassid,user + " " + 'Muscle Mass')
-        rename_realid(watermassid,user + " " + 'Muscle Mass')
-        rename_realid(bonemassid,user + " " + 'Bone Mass')
-        rename_realid(lbmid,user + " " + 'Lean Body Mass')
-        
         # Percentage
 
         log.info((log_update+'fat percentage %s') % (user, fatid, fat_per))
@@ -287,6 +281,15 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         open_url(url_per  % (domoticzurl, bmiid, bmi))
 
         log.info('Domoticz succesfully updated')
+
+        Time.sleep(.5)
+        rename_realid(weightid,user + " " + 'Weight')
+        rename_realid(fatmassid,user + " " + 'Fat Mass')
+        rename_realid(musclemassid,user + " " + 'Muscle Mass')
+        rename_realid(watermassid,user + " " + 'Muscle Mass')
+        rename_realid(bonemassid,user + " " + 'Bone Mass')
+        rename_realid(lbmid,user + " " + 'Lean Body Mass')
+        
     except Exception, e:
         print str(traceback.format_exc())
         print str(e)
