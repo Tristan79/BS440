@@ -77,46 +77,46 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
        
         # Mass
         log.info((log_update+'weight %s') % (user, id, weight))
-        callurl(url_mass % (domoticzurl, hardwareid, id, unit, weight))
+        callurl((url_mass) % (domoticzurl, hardwareid, id, unit, weight))
 
-        log.info(log_update+'fat mass %s' % (user, id+1, fat_mass))
-        callurl(url_mass % (domoticzurl, hardwareid, id+1, unit, fat_mass))
+        log.info((log_update+'fat mass %s') % (user, id+1, fat_mass))
+        callurl((url_mass) % (domoticzurl, hardwareid, id+1, unit, fat_mass))
 
-        log.info(log_update+'water mass %s' % (user, id+2, water_mass))
+        log.info((log_update+'water mass %s') % (user, id+2, water_mass))
         callurl(url_mass % (domoticzurl, hardwareid, id+2, unit, water_mass))
 
-        log.info(log_update+'muscle mass %s' % (user, id+3, muscle_mass))
+        log.info((log_update+'muscle mass %s') % (user, id+3, muscle_mass))
         callurl(url_mass % (domoticzurl, hardwareid, id+3, unit, muscle_mass))
 
-        log.info(log_update+'bone mass %s' % (user, id+4, bone_mass))
+        log.info((log_update+'bone mass %s') % (user, id+4, bone_mass))
         callurl(url_mass % (domoticzurl, hardwareid, id+4, unit, bone_mass))
 
-        log.info(log_update+'lean body mass %s' % (user, id+5, lbs_mass))
+        log.info((log_update+'lean body mass %s') % (user, id+5, lbs_mass))
         callurl(url_mass % (domoticzurl, hardwareid, id+5, unit, lbs_mass))
 
         # Percentage
 
-        log.info(log_update+'fat percentage %s' % (user, fatid, fat_per))
+        log.info((log_update+'fat percentage %s') % (user, fatid, fat_per))
         callurl(url_per % (domoticzurl, fatid, fat_per))
 
-        log.info(log_update+'water percentage (TBW) %s' % (user, waterid, water_per))
+        log.info((log_update+'water percentage %s') % (user, waterid, water_per))
         callurl(url_per % (domoticzurl, waterid, water_per))
                
-        log.info(log_update+'muscle percentage %s' % (user, muscleid, muscle_per))
+        log.info((log_update+'muscle percentage %s') % (user, muscleid, muscle_per))
         callurl(url_per % (domoticzurl, muscleid, muscle_per))
 
-        log.info(log_update+'bone percentage %s' % (user, boneid, bone_per))
+        log.info((log_update+'bone percentage %s') % (user, boneid, bone_per))
         callurl(url_per % (domoticzurl, boneid, bone_per))
 
-        log.info(log_update+'lean body mass percentage %s' % (user, lbsid, lbs_per))
+        log.info((log_update+'lean body mass percentage %s') % (user, lbsid, lbs_per))
         callurl(url_per % (domoticzurl, lbsid, lbs_per))
         
         # Other
         
-        log.info(log_update+'calories %s' % (user, kcalid, kcal))
+        log.info((log_update+'calories %s') % (user, kcalid, kcal))
         callurl(url_per  % (domoticzurl, kcalid, kcal))
             
-        log.info(log_update+'body mass index %s' % (user, bmiid, bmi))
+        log.info((log_update+'body mass index %s') % (user, bmiid, bmi))
         callurl(url_per  % (domoticzurl, bmiid, bmi))
         
         log.info('Domoticz succesfully updated')
