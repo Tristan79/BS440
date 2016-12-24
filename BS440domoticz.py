@@ -87,7 +87,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         waterid = use_virtual_sensor(user + ' Water Percentage',SensorPercentage)
         bmiid = use_virtual_sensor(user + ' BMI',SensorCustom)
         lbsid = use_virtual_sensor(user + ' Lean Body Mass Percentage',SensorPercentage)
-    except:
+    except Exception, e:
+        print str(e)
         log.error('Unable to access Domoticz sensors')
         return
 
