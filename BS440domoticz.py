@@ -14,7 +14,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     domoticzurl = config.get('Domoticz', 'domoticz_url')
     domoticzuser = ""
     domoticzpwd = ""
-    prefix = config.get('Domoticz', 'sensor_name_prefix')
    
     url_mass = 'http://%s/json.htm?type=command&param=udevice&hid=%s&' \
               'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s'
