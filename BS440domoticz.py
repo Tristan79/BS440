@@ -127,10 +127,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     def rename_realid(id,newname):
         query = True
         d = exists_realid(id)
-        if d[0] != "":
-            print d
         if d[1] == "Unknown":
-            print "YEA"
             rename_sensors(d[0],newname)
             query = True
 
@@ -164,6 +161,13 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             write_config = True
         return rid
         
+    def get_realid(iniid,default):
+        try:
+            return configDomoticz.get(personsection, iniid)
+        except:
+            write_config = True
+            configDomoticz.set(personsection, iniid, default)
+            return default
 
     try:
         try:
@@ -179,18 +183,19 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         bmiid = get_id('bmi_id','BMI',SensorCustom,'1;')
         
         # Mass
-        weightid = 79
-        fatmassid = 80
-        watermassid = 81
-        musclemassid = 82
-        bonemassid = 83
-        lbmid = 84
-        weightunit = 1
-        fatmassunit = 1
-        watermassunit = 1
-        musclemassunit = 1
-        bonemassunit = 1
-        lbmunit = 1
+        weightid = get_realid('weight_id',79)
+        fatmassid = get_realid('fat_mass_id',80)
+        watermassid = get_realid('watermass_id',81)
+        musclemassid = get_realid('muscle_mass_id',82)
+        bonemassid = get_realid('bone_mass_id',83)
+        lbmid = get_realid('lbm_id',84)
+        weightunit = get_realid('weight_unit',1)
+        fatmassunit = get_realid('fatmass_unit',1)
+        watermassunit = get_realid('watermass_unit',1)
+        musclemassunit = get_realid('musclemass_unit',1)
+        bonemassunit = get_realid('bonemass_unit',1)
+        lbmunit = get_realid('lbm_unit',1)
+        
     except Exception, e:
         print str(e)
         log.error('Unable to access Domoticz sensors')
@@ -202,9 +207,9 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         with open('BS440domoticz.ini', 'wb') as configfile:
             configDomoticz.write(configfile)
             configfile.close()
+            write_config = False
 
     try:
-        
         # calculate and populate variables
         weight = weightdata[0]['weight']
         fat_per = bodydata[0]['fat']
@@ -246,7 +251,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
 
         rename_realid(weightid,user + " " + 'Weight')
         rename_realid(fatmassid,user + " " + 'Fat Mass')
-        rename_realid(muscleid,user + " " + 'Muscle Mass')
+        rename_realid(musclemassid,user + " " + 'Muscle Mass')
+        rename_realid(watermassid,user + " " + 'Muscle Mass')
         rename_realid(bonemassid,user + " " + 'Bone Mass')
         rename_realid(lbmid,user + " " + 'Lean Body Mass')
         
