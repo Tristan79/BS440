@@ -39,10 +39,10 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return "None"
      
     harwarename = "Medisana"
-    hardwareid = exists_hardware(name)
+    hardwareid = exists_hardware(harwarename)
     if "None" == hardwareid:
-        response = open_url(url_hardware_add % (domoticzurl, name.replace(" ", "%20")))
-        hardwareid = exists_hardware(name)
+        response = open_url(url_hardware_add % (domoticzurl, harwarename.replace(" ", "%20")))
+        hardwareid = exists_hardware(harwarename)
         if "None" == hardwareid:
                 log.error('Unable to access Domoticz hardware')
                 return
