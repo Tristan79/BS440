@@ -14,7 +14,16 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     domoticzurl = config.get('Domoticz', 'domoticz_url')
     domoticzuser = ""
     domoticzpwd = ""
-   
+  
+    # read user's name
+    personsection = 'Person' + str(weightdata[0]['person'])
+    if config.has_section(personsection):
+        user = config.get(personsection, 'username')
+    else:
+        log.error('Unable to update Domoticz: No details found in ini file '
+                  'for person %d' % (weightdata[0]['person']))
+        return
+
     url_mass = 'http://%s/json.htm?type=command&param=udevice&hid=%s&' \
               'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s'
     url_per = 'http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s'
@@ -51,9 +60,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                 log.error('Unable to access Domoticz hardware')
                 return
 
-
     def exists_sensor(name):
-        
         response = open_url(url_sensor % (domoticzurl))
         data = json.loads(response.read())
         if 'result' in data:
@@ -62,7 +69,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                     print data['result'][i]['idx']
                     return data['result'][i]['idx']
         return 'None'
-
 
     def use_virtual_sensor(name,type,options=''):
         idx = exists_sensor(name)
@@ -80,30 +86,19 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     SensorPercentage = 2
     SensorCustom     = 1004
 
-    user = 'Tristan'
 
+    # create or discover sensors
     try:
         fatid = use_virtual_sensor(user + ' Fat Percentage',SensorPercentage)
-        kcalid = use_virtual_sensor(user + ' BMR',SensorCustom)
+        kcalid = use_virtual_sensor(user + ' BMR',SensorCustom,'1;calories')
         muscleid = use_virtual_sensor(user + ' Muscle Percentage',SensorPercentage)
         boneid  = use_virtual_sensor(user + ' Bone Percentage',SensorPercentage)
         waterid = use_virtual_sensor(user + ' Water Percentage',SensorPercentage)
-        bmiid = use_virtual_sensor(user + ' BMI',SensorCustom)
+        bmiid = use_virtual_sensor(user + ' BMI',SensorCustom,'1;')
         lbsid = use_virtual_sensor(user + ' Lean Body Mass Percentage',SensorPercentage)
     except Exception, e:
         print str(e)
         log.error('Unable to access Domoticz sensors')
-        return
-
-
-    return
-    # read user's name
-    personsection = 'Person' + str(weightdata[0]['person'])
-    if config.has_section(personsection):
-        user = config.get(personsection, 'username')
-    else:
-        log.error('Unable to update Domoticz: No details found in ini file '
-                  'for person %d' % (weightdata[0]['person']))
         return
 
     try:
