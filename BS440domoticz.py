@@ -16,7 +16,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     domoticzpwd = ""
   
     # read user's name
-    personsection = 'Person' + str(weightdata[0]['person'])
+    personsection = 'Person.Person1' # + str(weightdata[0]['person'])
     if config.has_section(personsection):
         user = config.get(personsection, 'username')
     else:
@@ -101,7 +101,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.error('Unable to access Domoticz sensors')
         return
 
-    return 
+    return
     try:
         
         # calculate and populate variables
