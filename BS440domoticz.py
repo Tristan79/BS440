@@ -75,9 +75,10 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                 log.error('Unable to access Domoticz hardware')
                 return
 
-    query = True
 
     def exists_sensor(name):
+        global query
+        global data
         if not query:
             data = json_result
         else:
@@ -91,6 +92,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return 'None'
 
     def exists_id(idx):
+        global query
+        global data
         if not query:
             data = json_result
         else:
@@ -104,6 +107,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return False
 
     def use_virtual_sensor(name,type,options=''):
+        global query
         idx = exists_sensor(name)
         if 'None' != idx:
             return idx
