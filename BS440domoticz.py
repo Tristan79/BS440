@@ -90,8 +90,6 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             if options != '':
                 url = url + '&sensoroptions=' + options
             response = open_url(url)
-            print "GER"
-            write_config = True
             return exists_sensor(name)
 
     SensorPercentage = 2
@@ -115,43 +113,51 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         if check('fat_id'):
             configDomoticz.get(personsection, 'fat_id')
         else:
-            print "HERE"
             fatid = use_virtual_sensor(user + ' Fat Percentage',SensorPercentage)
             configDomoticz.set(personsection, 'fat_id', fatid)
+            write_config = True
 
         if check('bmr_id'):
             configDomoticz.get(personsection, 'bmr_id')
         else:
             kcalid = use_virtual_sensor(user + ' BMR',SensorCustom,'1;Calories')
             configDomoticz.set(personsection, 'bmr_id', kcalid)
+            write_config = True
 
         if check('muscle_id'):
             configDomoticz.get(personsection, 'muscle_id')
         else:
             muscleid = use_virtual_sensor(user + ' Muscle Percentage',SensorPercentage)
             configDomoticz.set(personsection, 'muscle_id', muscleid)
+            write_config = True
 
         if check('bone_id'):
             configDomoticz.get(personsection, 'bone_id')
         else:
             boneid  = use_virtual_sensor(user + ' Bone Percentage',SensorPercentage)
+            configDomoticz.get(personsection, 'bone_id',boneid)
+            write_config = True
 
         if check('water_id'):
             configDomoticz.get(personsection, 'water_id')
         else:
             waterid = use_virtual_sensor(user + ' Water Percentage',SensorPercentage)
+            configDomoticz.Set(personsection, 'water_id',waterid)
+            write_config = True
 
         if check('bmi_id'):
             configDomoticz.get(personsection, 'bmi_id')
         else:
             bmiid = use_virtual_sensor(user + ' BMI',SensorCustom,'1;')
             configDomoticz.set(personsection, 'bmi_id', bmiid)
+            write_config = True
 
         if check('lbm_id'):
             configDomoticz.get(personsection, 'lbm_id')
         else:
             lbmid = use_virtual_sensor(user + ' Lean Body Mass Percentage',SensorPercentage)
             configDomoticz.set(personsection, 'lbm_id', lbmid)
+            write_config = True
 
     except Exception, e:
         print str(e)
