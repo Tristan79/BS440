@@ -121,7 +121,8 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
             for i in range(0,len(data['result'])):
                 if realid == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
                     return (data['result'][i]['idx'],data['result'][i]['Name'])
-        return 'None'
+        print "HERE"
+        return ("","")
 
 
     def rename_realid(id,newname):
