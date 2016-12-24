@@ -118,7 +118,7 @@ while True:
     bodydata = []
         
     if config.has_section('Domoticz'):
-        UpdateDomoticz(config, weightdatasorted, bodydatasorted, persondata)
+        UpdateDomoticz(config, weightdata, bodydata, persondata)
 
         
     break
