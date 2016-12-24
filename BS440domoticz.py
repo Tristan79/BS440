@@ -120,17 +120,17 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         if 'result' in data:
             for i in range(0,len(data['result'])):
                 if realid == data['result'][i]['ID'] and int(hardwareid) == data['result'][i]['HardwareID']:
-                    return (data['result'][i]['idx'],data['result'][i]['Name'])
-        print "HERE"
-        return ("","")
+                    return [data['result'][i]['idx'],data['result'][i]['Name']]
+        return [,]
 
 
     def rename_realid(id,newname):
         query = True
-        (idx, name) = exists_realid(id)
+        d = exists_realid(id)
+        print d
         print "HERE"
-        if name == "Unknown":
-            rename_sensors(idx,newname)
+        if d[1] == "Unknown":
+            rename_sensors(d[0],d[1])
             query = True
 
 
