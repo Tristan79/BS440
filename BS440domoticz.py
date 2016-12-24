@@ -19,7 +19,7 @@ query = True
 configDomoticz = SafeConfigParser()
 configDomoticz.read('BS440domoticz.ini')
 
-def UpdateDomoticz(config, weightdata, bodydata, persondata):
+def UpdateDomoticz(config, persondata, weightdata, bodydata):
     log = logging.getLogger(__name__)
     domoticzurl = config.get('Domoticz', 'domoticz_url')
     
@@ -279,7 +279,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         rename_realid(weightid,user + " " + 'Weight')
         rename_realid(fatmassid,user + " " + 'Fat Mass')
         rename_realid(musclemassid,user + " " + 'Muscle Mass')
-        rename_realid(watermassid,user + " " + 'Muscle Mass')
+        rename_realid(watermassid,user + " " + 'Water Mass')
         rename_realid(bonemassid,user + " " + 'Bone Mass')
         rename_realid(lbmid,user + " " + 'Lean Body Mass')
 

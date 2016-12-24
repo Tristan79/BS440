@@ -9,7 +9,7 @@ from binascii import hexlify
 from BS440decode import *
 from BS440mail import *
 from BS440domoticz import *
-#from BS440google import *
+from BS440google import *
 
 
 
@@ -113,24 +113,13 @@ adapter = pygatt.backends.GATTToolBackend()
 adapter.start()
 
 while True:
-    persondata = [{'gender': 'male', 'age': 37, 'person': 1, 'valid': True, 'activity': 'normal', 'size': 18}]
-    weightdata = [{'timestamp': 1482542877, 'valid': True, 'weight': 81.3, 'person': 1}]
-    bodydata = [{'timestamp': 1482544748, 'tbw': 62.6, 'person': 1, 'valid': True, 'fat': 17.2, 'muscle': 41.7, 'kcal': 2888, 'bone': 3.6}]
-        
-    if config.has_section('Domoticz'):
-        UpdateDomoticz(config, weightdata, bodydata, persondata)
-
-        
-    break
     wait_for_device(device_name)
     device = connect_device(ble_address)
     if device:
         persondata = []
         weightdata = []
         bodydata = []
-        
         continue_comms = True
-
         '''
         subscribe to characteristics and have processIndication
         process the data received.
@@ -174,12 +163,12 @@ while True:
                     # Sort scale output by timestamp to retrieve most recent three results
                     weightdatasorted = sorted(weightdata, key=lambda k: k['timestamp'], reverse=True)
                     bodydatasorted = sorted(bodydata, key=lambda k: k['timestamp'], reverse=True)
-                    #if config.has_section('Email'):
-                    #    BS440mail(config, persondata, weightdatasorted, bodydatasorted)
+                    if config.has_section('Email'):
+                        BS440mail(config, persondata, weightdatasorted, bodydatasorted)
                     if config.has_section('Domoticz'):
-                        UpdateDomoticz(config, weightdatasorted, bodydatasorted, persondata)
-                    #if config.has_section('Google'):
-                    #    UpdateGoogle(config, persondata, weightdatasorted, bodydatasorted)
-                    #    log.info('Google')
+                        UpdateDomoticz(config, persondata, weightdatasorted, bodydatasorted)
+                    if config.has_section('Google'):
+                        UpdateGoogle(config, persondata, weightdatasorted, bodydatasorted)
+                        log.info('Google')
                 else:
                     log.error('Unreliable data received. Unable to process')
