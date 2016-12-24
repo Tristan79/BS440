@@ -79,9 +79,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
     def exists_sensor(name):
         global query
         global data
-        if not query:
-            data = json_result
-        else:
+        if query:
             response = open_url(url_sensor % (domoticzurl))
             data = json.loads(response.read())
             query = False
@@ -91,27 +89,25 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
                     return data['result'][i]['idx']
         return 'None'
 
-    def exists_id(idx):
+    def exists_id(sensorid):
         global query
         global data
-        if not query:
-            data = json_result
-        else:
+        if query:
             response = open_url(url_sensor % (domoticzurl))
             data = json.loads(response.read())
             query = False
         if 'result' in data:
             for i in range(0,len(data['result'])):
-                if idx == data['result'][i]['idx'] and int(hardwareid) == data['result'][i]['HardwareID']:
+                if sensorid == data['result'][i]['idx'] and int(hardwareid) == data['result'][i]['HardwareID']:
                     return True
         return False
 
     def use_virtual_sensor(name,type,options=''):
         global query
-        idx = exists_sensor(name)
-        if 'None' != idx:
-            return idx
-        if 'None' == idx:
+        sensorid = exists_sensor(name)
+        if 'None' != sensorid:
+            return sensorid
+        if 'None' == sensorid:
             url = url_sensor_add % (domoticzurl, hardwareid, name.replace(' ', '%20'),str(type))
             if options != '':
                 url = url + '&sensoroptions=' + options
