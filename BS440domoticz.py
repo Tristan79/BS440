@@ -106,6 +106,11 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return True
 
     try:
+        try:
+            config.add_section(personsection)
+        except DuplicateSectionError:
+            pass
+
         if check('fat_id'):
             config.get(personsection, 'fat_id')
         else:
