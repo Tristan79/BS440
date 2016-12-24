@@ -101,6 +101,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         log.error('Unable to access Domoticz sensors')
         return
 
+    return 
     try:
         
         # calculate and populate variables
