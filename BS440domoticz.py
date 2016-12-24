@@ -7,6 +7,7 @@ import urllib
 import base64
 import logging
 import traceback
+import json
 
 def UpdateDomoticz(config, weightdata, bodydata, persondata):
     log = logging.getLogger(__name__)
