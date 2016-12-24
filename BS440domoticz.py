@@ -11,6 +11,8 @@ import logging
 def UpdateDomoticz(config, weightdata, bodydata, persondata):
     log = logging.getLogger(__name__)
     domoticzurl = config.get('Domoticz', 'domoticz_url')
+    domoticzuser = ""
+    domoticzpwd = ""
     personsection = 'Person' + str(weightdata[0]['person'])
     if config.has_section(personsection):
         weightid = config.get(personsection, 'weight_id')
@@ -31,7 +33,7 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         return
     try:
         
-        def callurl(url, domoticzuser, domoticzpwd):
+        def callurl(url):
             log.debug('calling url: %s' % (url))
             try:
                 response = urllib.urlopen(url)
@@ -43,34 +45,34 @@ def UpdateDomoticz(config, weightdata, bodydata, persondata):
         callurl('http://%s/json.htm?type=command&param=udevice&hid=%s&' \
               'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s' % (
                domoticzurl, bonehid, boneid, bonedunit,
-               bodydata[0]['bone']),domoticzuser,domoticzpwd)
+               bodydata[0]['bone']))
 
         log.info('Updating Domoticz for user %s at index %s with weight %s' % (
                   scaleuser, weightid, weightdata[0]['weight']))
         callurl('http://%s/json.htm?type=command&param=udevice&hid=%s&' \
               'did=%s&dunit=%s&dtype=93&dsubtype=1&nvalue=0&svalue=%s' % (
                domoticzurl, weighthid, weightid, weightdunit,
-               weightdata[0]['weight']),domoticzuser,domoticzpwd)
+               weightdata[0]['weight']))
 
         log.info('Updating Domoticz for user %s at index %s with muscle %s' % (
                   scaleuser, muscleid, bodydata[0]['muscle']))
         callurl('http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (
-               domoticzurl, muscleid, bodydata[0]['muscle']),domoticzuser,domoticzpwd)
+               domoticzurl, muscleid, bodydata[0]['muscle']))
                
         log.info('Updating Domoticz for user %s at index %s with fat %s' % (
                   scaleuser, fatid, bodydata[0]['fat']))
         callurl('http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (
-               domoticzurl, fatid, bodydata[0]['fat']),domoticzuser,domoticzpwd)
+               domoticzurl, fatid, bodydata[0]['fat']))
                
         log.info('Updating Domoticz for user %s at index %s with calories %s' % (
                   scaleuser, kcalid, bodydata[0]['kcal']))
         callurl('http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (
-               domoticzurl, kcalid, bodydata[0]['kcal']),domoticzuser,domoticzpwd)
+               domoticzurl, kcalid, bodydata[0]['kcal']))
                
         log.info('Updating Domoticz for user %s at index %s with water %s' % (
                   scaleuser, tbwid, bodydata[0]['tbw']))
         callurl('http://%s/json.htm?type=command&param=udevice&idx=%s&nvalue=0&svalue=%s' % (
-               domoticzurl, tbwid, bodydata[0]['tbw']),domoticzuser,domoticzpwd)
+               domoticzurl, tbwid, bodydata[0]['tbw']))
 
         for i in persondata:
             if i['person'] == bodydata[0]['person']:
